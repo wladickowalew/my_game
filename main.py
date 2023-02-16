@@ -1,5 +1,6 @@
 import tkinter
 from random import randint
+from consts import *
 
 
 def move_player(event):
@@ -22,9 +23,9 @@ def move_player(event):
 
 def key_pressed(event):
     # print(event)
-    move_keys = (37, 38, 39, 40, 87, 65, 83, 68) # коды клавиш, отвечающие за wasd и стрелочки
-    if event.keycode in move_keys:             
-        move_player(event)           # вызываем функцию, отвечающую за движение объекта
+    if event.keycode in move_keys:
+        move_player(event)  # вызываем функцию, отвечающую за движение объекта
+
 
 def random_coords():
     N, M = h // cell_h, w // cell_w
@@ -38,25 +39,27 @@ def random_coords():
 
 
 def start_game():
-    player_coords = random_coords()
-    player = canvas.create_image(player_coords, image=pika_pic, anchor='nw')
-
-    for i in range(20):
+    for i in range(carrot_count):
         coords = random_coords()
-        carrot = canvas.create_image(coords, image=carrot_pic, anchor='nw')
+        carrot = canvas.create_image(coords, image=images["carrot"], anchor='nw')
+        carrots.append(carrot)
 
+    for i in range(box_count):
+        coords = random_coords()
+        box = canvas.create_image(coords, image=images["box"], anchor='nw')
+        boxes.append(box)
+
+    player_coords = random_coords()
+    player = canvas.create_image(player_coords, image=images["pika"], anchor='nw')
     return player
 
+
 master = tkinter.Tk()
-w, h = 800, 600
-cell_w, cell_h = 50, 50
-step = 50
 all_coords = set()
-fone_pic = tkinter.PhotoImage(file="images/forest.png")
-pika_pic = tkinter.PhotoImage(file="images/pika.png")
-carrot_pic = tkinter.PhotoImage(file="images/carrot.png")
+carrots, boxes = [], []
+load_images(tkinter)
 canvas = tkinter.Canvas(master, bg='white', height=h, width=w)
-canvas.create_image((0, 0), image=fone_pic, anchor='nw')
+canvas.create_image((0, 0), image=images["forest"], anchor='nw')
 player = start_game()
 canvas.pack()
 master.bind("<KeyPress>", key_pressed)
