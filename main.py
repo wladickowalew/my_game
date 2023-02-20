@@ -3,6 +3,20 @@ from random import randint
 from consts import *
 
 
+def object_collision(obj1, obj2):
+    return canvas.coords(obj1) == canvas.coords(obj2)
+
+
+def carrot_collision():
+    global points
+    for carrot in carrots:
+        if object_collision(player, carrot):
+            carrots.remove(carrot)
+            canvas.delete(carrot)
+            points += 1
+            return
+
+
 def move_player(event):
     pos = canvas.coords(player)
     if event.keysym in ("Up", "w"):
@@ -25,6 +39,7 @@ def key_pressed(event):
     # print(event)
     if event.keycode in move_keys:
         move_player(event)  # вызываем функцию, отвечающую за движение объекта
+        carrot_collision()
 
 
 def random_coords():
@@ -57,6 +72,7 @@ def start_game():
 master = tkinter.Tk()
 all_coords = set()
 carrots, boxes = [], []
+points = 0
 load_images(tkinter)
 canvas = tkinter.Canvas(master, bg='white', height=h, width=w)
 canvas.create_image((0, 0), image=images["forest"], anchor='nw')
