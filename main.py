@@ -1,5 +1,7 @@
 import tkinter
 from random import randint
+from tkinter import LEFT
+
 from consts import *
 
 
@@ -87,8 +89,10 @@ load_images(tkinter)
 canvas = tkinter.Canvas(master, bg='white', height=h, width=w)
 canvas.create_image((0, 0), image=images["forest"], anchor='nw')
 player = start_game()
-point_lbl = tkinter.Label(master, text=POINTS_TEXT + "0", fg='black')
-point_lbl.pack()
+point_lbl = tkinter.Label(master, justify=LEFT,
+                          font=("Helvetica", 20), compound=LEFT,
+                          text=POINTS_TEXT + "0", fg='black')
+point_lbl.pack(anchor="w")
 canvas.pack()
 master.bind("<KeyPress>", key_pressed)
 master.mainloop()
