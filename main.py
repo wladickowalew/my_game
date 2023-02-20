@@ -14,7 +14,15 @@ def carrot_collision():
             carrots.remove(carrot)
             canvas.delete(carrot)
             points += 1
+            point_lbl.config(text=POINTS_TEXT + str(points))
             return
+
+
+def box_collision():
+    for box in boxes:
+        if object_collision(player, box):
+            return True
+    return False
 
 
 def move_player(event):
@@ -33,13 +41,15 @@ def move_player(event):
     elif event.keysym in ("Right", "d"):
         if pos[0] + cell_w < w:
             canvas.move(player, step, 0)
+    carrot_collision()
+    if box_collision():
+        canvas.moveto(player, pos[0], pos[1])
 
 
 def key_pressed(event):
     # print(event)
     if event.keycode in move_keys:
         move_player(event)  # вызываем функцию, отвечающую за движение объекта
-        carrot_collision()
 
 
 def random_coords():
@@ -77,6 +87,8 @@ load_images(tkinter)
 canvas = tkinter.Canvas(master, bg='white', height=h, width=w)
 canvas.create_image((0, 0), image=images["forest"], anchor='nw')
 player = start_game()
+point_lbl = tkinter.Label(master, text=POINTS_TEXT + "0", fg='black')
+point_lbl.pack()
 canvas.pack()
 master.bind("<KeyPress>", key_pressed)
 master.mainloop()

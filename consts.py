@@ -5,6 +5,7 @@ box_count = 50
 step = 50
 move_keys = (37, 38, 39, 40, 87, 65, 83, 68)  # коды клавиш, отвечающие за wasd и стрелочки
 images = {}
+POINTS_TEXT = "Points: "
 
 
 def load_images(tkinter):
